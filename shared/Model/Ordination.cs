@@ -22,9 +22,7 @@ public abstract class Ordination {
     /// </summary>
     public int antalDage()
     {
-        var min = startDen.Day;
-        var max = slutDen.Day;
-        return min - max + 1;
+        return (slutDen.Date - startDen.Date).Days + 1;
     }
 
     public override String ToString() {

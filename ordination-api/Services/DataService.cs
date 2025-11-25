@@ -131,26 +131,104 @@ public class DataService
     }
 
     public PN OpretPN(int patientId, int laegemiddelId, double antal, DateTime startDato, DateTime slutDato) {
-        // TODO: Implement!
-        return null!;
+        var patient = db.Patienter
+            .Include(p => p.ordinationer)
+            .FirstOrDefault(p => p.PatientId == patientId);
+
+        if (patient == null)
+            throw new ArgumentException("Patient findes ikke");
+
+        var lm = db.Laegemiddler.FirstOrDefault(l => l.LaegemiddelId == laegemiddelId);
+        if (lm == null)
+            throw new ArgumentException("Lægemiddel findes ikke");
+
+        PN pn = new PN(startDato, slutDato, antal, lm);
+
+        db.Ordinationer.Add(pn);
+        db.SaveChanges();
+
+        patient.ordinationer.Add(pn);
+        db.SaveChanges();
+
+        return pn;
     }
 
     public DagligFast OpretDagligFast(int patientId, int laegemiddelId, 
         double antalMorgen, double antalMiddag, double antalAften, double antalNat, 
-        DateTime startDato, DateTime slutDato) {
+        DateTime startDato, DateTime slutDato)
+    {
+        var patient = db.Patienter
+            .Include(p => p.ordinationer)
+            .FirstOrDefault(p => p.PatientId == patientId);
+        
+        if (patient == null)
+            throw new ArgumentException("Patient findes ikke");
 
-        // TODO: Implement!
-        return null!;
+        var lm = db.Laegemiddler.FirstOrDefault(l => l.LaegemiddelId == laegemiddelId);
+        if (lm == null)
+            throw new ArgumentException("Lægemiddel findes ikke");
+
+
+        DagligFast dagligFast = new DagligFast(startDato, slutDato, lm, antalMorgen, antalMiddag, antalAften, antalNat );
+        
+        db.Ordinationer.Add(dagligFast);
+        db.SaveChanges();
+        
+        patient.ordinationer.Add(dagligFast);
+        db.SaveChanges();
+        
+        return dagligFast;
     }
 
     public DagligSkæv OpretDagligSkaev(int patientId, int laegemiddelId, Dosis[] doser, DateTime startDato, DateTime slutDato) {
-        // TODO: Implement!
-        return null!;
+        var patient = db.Patienter
+            .Include(p => p.ordinationer)
+            .FirstOrDefault(p => p.PatientId == patientId);
+        
+        if (patient == null)
+            throw new ArgumentException("Patient findes ikke");
+
+        var lm = db.Laegemiddler.FirstOrDefault(l => l.LaegemiddelId == laegemiddelId);
+        if (lm == null)
+            throw new ArgumentException("Lægemiddel findes ikke");
+
+        DagligSkæv dagligSkaev = new DagligSkæv(startDato, slutDato, lm, doser);
+        db.Ordinationer.Add(dagligSkaev);
+        db.SaveChanges();
+        
+        patient.ordinationer.Add(dagligSkaev);
+        db.SaveChanges();
+        
+        return dagligSkaev;
     }
 
-    public string AnvendOrdination(int id, Dato dato) {
-        // TODO: Implement!
-        return null!;
+    public string AnvendOrdination(int id, Dato dato)
+    {
+
+        var ordination = db.Ordinationer.FirstOrDefault(o => o.OrdinationId == id);
+
+        if (ordination == null)
+        {
+            return $"Ordination med id {id} findes ikke";
+        }
+
+        if (ordination is not PN pnOrdination)
+        {
+            return $"Ordination med id {id} er ikke en PN ordination";
+        }
+
+        bool succes = pnOrdination.givDosis(dato);
+
+        if (succes)
+        {
+            db.SaveChanges();
+            return $"Dosis givet d.{dato.dato.ToShortDateString()}";
+        }
+        else
+        {
+            return
+                $"Dato {dato.dato.ToShortDateString()} er ikke inden for ordinationens gyldighedsperiode ({pnOrdination.startDen.ToShortDateString()} - {pnOrdination.slutDen.ToShortDateString()})";
+        }
     }
 
     /// <summary>
