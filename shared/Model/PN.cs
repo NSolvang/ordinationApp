@@ -17,13 +17,33 @@ public class PN : Ordination {
     /// Returner false ellers og datoen givesDen ignoreres
     /// </summary>
     public bool givDosis(Dato givesDen) {
-        // TODO: Implement!
+        if (givesDen.dato >= startDen && givesDen.dato <= slutDen)
+        {
+            dates.Add(givesDen);
+            return true;
+        }
         return false;
     }
 
     public override double doegnDosis() {
-    	// TODO: Implement!
-        return -1;
+        if (dates.Count == 0) {
+            return 0; 
+        }
+    
+        if (dates.Count == 1) {
+            return antalEnheder; 
+        }
+        
+        DateTime foersteGivning = dates.Min(d => d.dato);
+        DateTime sidsteGivning = dates.Max(d => d.dato);
+    
+        double antalDage = (sidsteGivning - foersteGivning).Days;
+    
+        if (antalDage == 0) {
+            return getAntalGangeGivet() * antalEnheder;
+        }
+    
+        return (getAntalGangeGivet() * antalEnheder) / antalDage;
     }
 
 
