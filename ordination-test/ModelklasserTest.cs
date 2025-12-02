@@ -11,9 +11,11 @@ public class ModelklasserTest
         PN pn = new PN(new DateTime(2025, 11, 28),
             new DateTime(2025, 11, 29),
             10);
-        pn.doegnDosis();
 
-        Assert.Equals(5,pn.doegnDosis());
+        pn.givDosis(new Dato { dato = new DateTime(2025, 11, 28) });
+        pn.givDosis(new Dato { dato = new DateTime(2025, 11, 29) });
+        
+        Assert.AreEqual(5, pn.doegnDosis());
 
     }
     

@@ -8,7 +8,9 @@ public class PN : Ordination {
 		this.antalEnheder = antalEnheder;
 	}
     
-    public PN (DateTime startDen, DateTime slutDen, double antalEnheder){
+    public PN(DateTime startDen, DateTime slutDen, double antalEnheder)
+        : base(null!, startDen, slutDen)
+    {
         this.antalEnheder = antalEnheder;
     }
 
@@ -39,7 +41,7 @@ public class PN : Ordination {
     
         double antalDage = (sidsteGivning - foersteGivning).Days + 1;
         
-        return (samletDosis() / antalDage);
+        return antalEnheder / antalDage;
     }
 
 
