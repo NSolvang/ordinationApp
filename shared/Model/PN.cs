@@ -7,6 +7,10 @@ public class PN : Ordination {
     public PN (DateTime startDen, DateTime slutDen, double antalEnheder, Laegemiddel laegemiddel) : base(laegemiddel, startDen, slutDen) {
 		this.antalEnheder = antalEnheder;
 	}
+    
+    public PN (DateTime startDen, DateTime slutDen, double antalEnheder){
+        this.antalEnheder = antalEnheder;
+    }
 
     public PN() : base(null!, new DateTime(), new DateTime()) {
     }
