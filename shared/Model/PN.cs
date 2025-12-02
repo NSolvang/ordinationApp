@@ -44,7 +44,7 @@ public class PN : Ordination {
     
         double antalDage = (sidsteGivning - foersteGivning).Days + 1;
         
-        return antalEnheder / antalDage;
+        return samletDosis() / antalDage;
     }
 
 
