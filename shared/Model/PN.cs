@@ -32,6 +32,9 @@ public class PN : Ordination {
     }
 
     public override double doegnDosis() {
+        if (startDen > slutDen)
+            throw new ArgumentException("Ugyldig ordination: startDen er efter slutDen.");
+
         if (dates.Count == 0) {
             return 0; 
         }
