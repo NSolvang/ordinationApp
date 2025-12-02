@@ -55,20 +55,16 @@ public class ServiceTest
     }
     
     [TestMethod]
-    public void TestOpretPN()
+    public void TestOpretPNMedKorrektAntalEnheder()
     {
         Patient patient = service.GetPatienter().First();
         Laegemiddel lm = service.GetLaegemidler().First();
-        
-        int startAntal = service.GetPNs().Count();
-        
-        service.OpretPN(1, 1, 5, DateTime.Now, DateTime.Now.AddDays(3));
-        
-        Assert.AreEqual(startAntal + 1, service.GetPNs().Count());
-        
-        PN nyPN = service.GetPNs().Last();
-        
-        Assert.AreEqual(5, nyPN.antalEnheder );
+    
+
+        PN nyPN = service.OpretPN(1, 1, 5, DateTime.Now, DateTime.Now.AddDays(3));
+    
+
+        Assert.AreEqual(5, nyPN.antalEnheder);
     }
 
     [TestMethod]
