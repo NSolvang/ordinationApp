@@ -36,10 +36,4 @@ public class ModelklasserTest
 
     }
     
-    
-    [TestMethod]
-    public void TestDoegnDosisNegativ()
-    {
-        
-    }
 }

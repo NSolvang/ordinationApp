@@ -42,6 +42,29 @@ public class ServiceTest
     }
 
     [TestMethod]
+    public void OpretDagligSkæv()
+    {
+        Patient patient = service.GetPatienter().First();
+        Laegemiddel lm = service.GetLaegemidler().First();
+        
+        int initialCount = service.GetDagligSkæve().Count(); 
+        
+        Dosis[] doser = new Dosis[]
+        {
+            new Dosis(DateTime.Now.AddHours(12).AddMinutes(0), 0.5), 
+            new Dosis(DateTime.Now.AddHours(12).AddMinutes(40), 1),
+            new Dosis(DateTime.Now.AddHours(16).AddMinutes(0), 2.5),
+            new Dosis(DateTime.Now.AddHours(18).AddMinutes(45), 3)
+        };
+        
+        service.OpretDagligSkaev(patient.PatientId, lm.LaegemiddelId, doser, DateTime.Now, DateTime.Now.AddDays(3));
+        
+        Assert.AreEqual(initialCount + 1, service.GetDagligSkæve().Count(), "Antallet af DagligSkæv ordinationer burde stige med én.");
+    }
+    
+    
+
+    [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
     public void TestAtKodenSmiderEnException()
     {
