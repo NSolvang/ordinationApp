@@ -57,6 +57,37 @@ public class ServiceTest
     [TestMethod]
     public void TestOpretPN()
     {
+        Patient patient = service.GetPatienter().First();
+        Laegemiddel lm = service.GetLaegemidler().First();
         
+        int startAntal = service.GetPNs().Count();
+        
+        service.OpretPN(1, 1, 5, DateTime.Now, DateTime.Now.AddDays(3));
+        
+        Assert.AreEqual(startAntal + 1, service.GetPNs().Count());
+        
+        PN nyPN = service.GetPNs().Last();
+        
+        Assert.AreEqual(5, nyPN.antalEnheder );
     }
+
+    [TestMethod]
+    public void TestOpretPNPåPatientDerIkkeFindes()
+    {
+        Assert.ThrowsException<ArgumentException>(() =>
+        {
+            service.OpretPN(0, 1, 5, DateTime.Now, DateTime.Now.AddDays(3));
+        });
+    }
+
+    [TestMethod]
+    public void TestOpretPNPåLaegemiddelDerIkkeFindes()
+    {
+        Assert.ThrowsException<ArgumentException>(() =>
+        {
+            service.OpretPN(1, 0, 5, DateTime.Now, DateTime.Now.AddDays(3));
+        });
+    }
+    
+
 }
