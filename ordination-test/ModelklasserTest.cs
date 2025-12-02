@@ -23,12 +23,14 @@ public class ModelklasserTest
     [TestMethod]
     public void TestDoegnDosisUdenforOrdination()
     {
-        PN pn = new PN(new DateTime(2025, 11, 30),
-            new DateTime(2025, 11, 28),
-            10);
-        
         Assert.ThrowsException<ArgumentException>(() =>
         {
+            PN pn = new PN(
+                new DateTime(2025, 11, 30), 
+                new DateTime(2025, 11, 28), 
+                10
+            );
+            
             pn.doegnDosis();
         });
 
