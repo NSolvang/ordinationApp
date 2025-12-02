@@ -240,8 +240,36 @@ public class DataService
     /// <param name="laegemiddel"></param>
     /// <returns></returns>
 	public double GetAnbefaletDosisPerDøgn(int patientId, int laegemiddelId) {
-        // TODO: Implement!
-        return -1;
-	}
+        if (patientId <=0)
+            throw new ArgumentException("ugyldigt patient ID");
+        
+        if (laegemiddelId <= 0)
+            throw new ArgumentException("ugyldigt laegemiddel ID");
+        
+        var patient = db.Patienter.FirstOrDefault(p => p.PatientId == patientId);
+        if (patient == null)
+            throw new ArgumentException("Patient findes ikke");
+        
+        var laegemiddel = db.Laegemiddler.FirstOrDefault(l => l.LaegemiddelId == laegemiddelId);
+        if (laegemiddel == null)
+            throw new ArgumentException("Laegemiddel findes ikke");
+
+        double vaegt = patient.vaegt;
+
+        if (vaegt < 25)
+        {
+            return laegemiddel.enhedPrKgPrDoegnLet * vaegt;
+        }
+
+        else if (vaegt <= 120)
+        {
+            return laegemiddel.enhedPrKgPrDoegnNormal * vaegt;
+        }
+        else
+        {
+            return laegemiddel.enhedPrKgPrDoegnTung * vaegt;
+        }
+        
+    }
     
 }
