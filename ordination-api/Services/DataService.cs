@@ -129,7 +129,7 @@ public class DataService
     public List<Laegemiddel> GetLaegemidler() {
         return db.Laegemiddler.ToList();
     }
-
+    
     public PN OpretPN(int patientId, int laegemiddelId, double antal, DateTime startDato, DateTime slutDato) {
         var patient = db.Patienter
             .Include(p => p.ordinationer)
@@ -149,7 +149,7 @@ public class DataService
 
         patient.ordinationer.Add(pn);
         db.SaveChanges();
-
+        
         return pn;
     }
 
@@ -200,6 +200,7 @@ public class DataService
         db.SaveChanges();
         
         return dagligSkaev;
+    
     }
 
     public string AnvendOrdination(int id, Dato dato)

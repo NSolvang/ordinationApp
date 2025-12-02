@@ -29,21 +29,13 @@ public class PN : Ordination {
         if (dates.Count == 0) {
             return 0; 
         }
-    
-        if (dates.Count == 1) {
-            return antalEnheder; 
-        }
         
         DateTime foersteGivning = dates.Min(d => d.dato);
         DateTime sidsteGivning = dates.Max(d => d.dato);
     
-        double antalDage = (sidsteGivning - foersteGivning).Days;
-    
-        if (antalDage == 0) {
-            return getAntalGangeGivet() * antalEnheder;
-        }
-    
-        return (getAntalGangeGivet() * antalEnheder) / antalDage;
+        double antalDage = (sidsteGivning - foersteGivning).Days + 1;
+        
+        return (samletDosis() / antalDage);
     }
 
 
