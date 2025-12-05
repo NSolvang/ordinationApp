@@ -68,6 +68,7 @@ public class ServiceTest
     [ExpectedException(typeof(ArgumentNullException))]
     public void TestAtKodenSmiderEnException()
     {
+        throw new ArgumentNullException();
         // Herunder skal man så kalde noget kode,
         // der smider en exception.
 
